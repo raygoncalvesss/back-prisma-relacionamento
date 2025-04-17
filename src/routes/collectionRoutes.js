@@ -10,8 +10,8 @@ collectionRouter.get("/", CollectionController.getAllCollections);
 // GET /personagens/:id - Obter um Personagem pelo ID
 //collectionRouter.get("/:id", PersonagemController.getPersonagemById);
 
-// POST /personagens - Criar um novo Personagem
-//collectionRouter.post("/", PersonagemController.createPersonagem);
+// POST /colecoes - Criar uma nova coleção
+collectionRouter.post("/", CollectionController.createCollection);
 
 // PUT /personagens/:id - Atualizar um Personagem
 //collectionRouter.put("/:id", PersonagemController.updatePersonagem);
