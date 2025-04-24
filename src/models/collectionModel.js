@@ -3,37 +3,34 @@ import prisma from "../../prisma/prisma.js";
 class CollectionModel {
   // Obter todas as coleções
   async findAll() {
-    const colecoes = await prisma.collection.findMany({
+    const collections = await prisma.collection.findMany({
       orderBy: {
         createdAt: "desc",
       },
+
       include: {
         cards: true,
       },
     });
 
-    console.log(colecoes);
+    console.log(collections);
 
-    return colecoes;
+    return collections;
   }
 
-  // Obter um personagem pelo ID
+  // Obter uma coleção pelo ID
   async findById(id) {
-    const personagem = await prisma.personagem.findUnique({
+    const collection = await prisma.collection.findUnique({
       where: {
         id: Number(id),
       },
     });
 
-    return personagem;
+    return collection;
   }
 
   // Criar uma nova coleção
-  async create(
-    name,
-    description,
-    releaseYear,
-  ) {
+  async create(name, description, releaseYear) {
     const newCollection = await prisma.collection.create({
       data: {
         name,
@@ -45,70 +42,50 @@ class CollectionModel {
     return newCollection;
   }
 
-  // Atualizar um personagem
+  // Atualizar uma coleção
   async update(
     id,
-    title,
-    description,
-    episodes,
-    releaseYear,
-    studio,
-    genres,
-    rating,
-    imageUrl
+    name,
+        description,
+        releaseYear,
   ) {
-    const personagem = await this.findById(id);
+    const collection = await this.findById(id);
 
-    if (!personagem) {
+    if (!collection) {
       return null;
     }
 
-    // Atualize o personagem existente com os novos dados
+    // Atualize a coleção existente com os novos dados
     const data = {};
-    if (title !== undefined) {
-      data.title = title;
+    if (name !== undefined) {
+      data.name = name;
     }
     if (description !== undefined) {
       data.description = description;
     }
-    if (episodes !== undefined) {
-      data.episodes = episodes;
-    }
     if (releaseYear !== undefined) {
       data.releaseYear = releaseYear;
     }
-    if (studio !== undefined) {
-      data.studio = studio;
-    }
-    if (genres !== undefined) {
-      data.genres = genres;
-    }
-    if (rating !== undefined) {
-      data.rating = rating;
-    }
-    if (imageUrl !== undefined) {
-      data.imageUrl = imageUrl;
-    }
 
-    const personagemUpdated = await prisma.personagem.update({
+    const collectionUpdated = await prisma.collection.update({
       where: {
         id: Number(id),
       },
       data,
     });
 
-    return personagemUpdated;
+    return collectionUpdated;
   }
 
-  // Remover um personagem
+  // Remover uma coleção
   async delete(id) {
-    const personagem = await this.findById(id);
+    const collection = await this.findById(id);
 
-    if (!personagem) {
+    if (!collection) {
       return null;
     }
 
-    await prisma.personagem.delete({
+    await prisma.collection.delete({
       where: {
         id: Number(id),
       },

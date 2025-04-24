@@ -1,36 +1,36 @@
 import CollectionModel from "../models/collectionModel.js";
 
 class CollectionController {
-  // GET /colecoes
+  // GET /api/coleções
   async getAllCollections(req, res) {
     try {
-      const colecoes = await CollectionModel.findAll();
-      res.json(colecoes);
+      const collections = await CollectionModel.findAll();
+      res.json(collections);
     } catch (error) {
-      console.error("Erro ao buscar as coleções:", error);
-      res.status(500).json({ error: "Erro ao buscar as coleções" });
+      console.error("Erro ao buscar coleções:", error);
+      res.status(500).json({ error: "Erro ao buscar coleções" });
     }
   }
 
-  // GET /api/personagens/:id
-  async getPersonagemById(req, res) {
+  // GET /api/coleções/:id
+  async getCollectionById(req, res) {
     try {
       const { id } = req.params;
 
-      const personagem = await PersonagemModel.findById(id);
+      const collection = await CollectionModel.findById(id);
 
-      if (!personagem) {
-        return res.status(404).json({ error: "Personagem não encontrado" });
+      if (!collection) {
+        return res.status(404).json({ error: "Coleção não encontrada" });
       }
 
-      res.json(personagem);
+      res.json(collection);
     } catch (error) {
-      console.error("Erro ao buscar personagem:", error);
-      res.status(500).json({ error: "Erro ao buscar personagem" });
+      console.error("Erro ao buscar coleção:", error);
+      res.status(500).json({ error: "Erro ao buscar coleção" });
     }
   }
 
-  // POST /colecoes
+  // POST /api/coleçõess
   async createCollection(req, res) {
     try {
       // Validação básica
@@ -41,19 +41,20 @@ class CollectionController {
       } = req.body;
 
       // Verifica se todos os campos da coleção foram fornecidos
-      if ( !name || !releaseYear ) {
+      if (
+        !name ||
+        !releaseYear 
+      ) {
         return res
           .status(400)
-          .json({
-             error: "Os campos nome e ano de lançamento são obrigatórios",
-             });
+          .json({ error: "Todos os campos são obrigatórios" });
       }
 
       // Criar a nova coleção
       const newCollection = await CollectionModel.create(
         name,
         description,
-        releaseYear,
+        releaseYear
       );
 
       if (!newCollection) {
@@ -67,61 +68,51 @@ class CollectionController {
     }
   }
 
-  // PUT /api/personagens/:id
-  async updatePersonagem(req, res) {
+  // PUT /api/coleções/:id
+  async updateCollection(req, res) {
     try {
       const { id } = req.params;
       const {
-        title,
+        name,
         description,
-        episodes,
         releaseYear,
-        studio,
-        genres,
-        rating,
-        imageUrl,
       } = req.body;
 
-      // Atualizar o personagem
-      const updatedPersonagem = await PersonagemModel.update(
+      // Atualizar a coleção
+      const updatedCollection = await CollectionModel.update(
         id,
-        title,
+        name,
         description,
-        episodes,
-        releaseYear,
-        studio,
-        genres,
-        rating,
-        imageUrl
+        releaseYear
       );
 
-      if (!updatedPersonagem) {
-        return res.status(404).json({ error: "Personagem não encontrado" });
+      if (!updatedCollection) {
+        return res.status(404).json({ error: "Coleção não encontrado" });
       }
 
-      res.json(updatedPersonagem);
+      res.json(updatedCollection);
     } catch (error) {
-      console.error("Erro ao atualizar personagem:", error);
-      res.status(500).json({ error: "Erro ao atualizar personagem" });
+      console.error("Erro ao atualizar coleção:", error);
+      res.status(500).json({ error: "Erro ao atualizar coleção" });
     }
   }
 
-  // DELETE /api/personagens/:id
-  async deletePersonagem(req, res) {
+  // DELETE /api/coleções/:id
+  async deleteCollection(req, res) {
     try {
       const { id } = req.params;
 
-      // Remover o personagem
-      const result = await PersonagemModel.delete(id);
+      // Remover a coleção
+      const result = await CollectionModel.delete(id);
 
       if (!result) {
-        return res.status(404).json({ error: "Personagem não encontrado" });
+        return res.status(404).json({ error: "Coleção não encontrado" });
       }
 
       res.status(204).end(); // Resposta sem conteúdo
     } catch (error) {
-      console.error("Erro ao remover personagem:", error);
-      res.status(500).json({ error: "Erro ao remover personagem" });
+      console.error("Erro ao remover coleção:", error);
+      res.status(500).json({ error: "Erro ao remover coleção" });
     }
   }
 }
