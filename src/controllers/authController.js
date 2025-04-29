@@ -30,7 +30,7 @@ class AuthController {
         }
 
         // Hash da senha
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcryptjs.hash(password, 10);
 
         // Criar o objeto do usuário
         const data = {
