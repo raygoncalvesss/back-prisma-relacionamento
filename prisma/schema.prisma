@@ -18,10 +18,16 @@ model User {
   username String @unique
   email String @unique
   password String
-
   createdAt DateTime @default(now())
-  updateAt DateTime @updatedAt
+  channel  Channel? 
+}
 
-  @@map("users")
+model Channel {
+  id String @id @default(uuid())
+  name String 
+  description String?
+  userId String @unique
+  user User @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
 }
 
